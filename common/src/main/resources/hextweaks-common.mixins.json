@@ -6,10 +6,10 @@
   "client": [
   ],
   "mixins": [
-    "net.walksanator.hextweaks.mixin.ComputerAccesssor",
-    "net.walksanator.hextweaks.mixin.EnvironmentAccessor",
-    "net.walksanator.hextweaks.mixin.MixinClericReporting",
-    "net.walksanator.hextweaks.mixin.NeuralAccessor"
+    "ComputerAccesssor",
+    "EnvironmentAccessor",
+    "MixinClericReporting",
+    "NeuralAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
