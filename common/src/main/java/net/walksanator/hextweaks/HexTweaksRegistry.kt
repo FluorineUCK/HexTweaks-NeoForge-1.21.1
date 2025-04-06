@@ -18,13 +18,13 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageType
 import net.minecraft.world.item.Item
-import net.walksantor.hextweaks.casting.HexTweaksContinuationTypes
-import net.walksantor.hextweaks.casting.HexTweaksIotaTypes
-import net.walksantor.hextweaks.casting.MindflayRegistry
-import net.walksantor.hextweaks.casting.PatternRegistry
-import net.walksantor.hextweaks.casting.handler.GrandSpellHandler
-import net.walksantor.hextweaks.computer.WandPocketUpgrade
-import net.walksantor.hextweaks.computer.WandTurtleUpgrade
+import net.walksanator.hextweaks.casting.HexTweaksContinuationTypes
+import net.walksanator.hextweaks.casting.HexTweaksIotaTypes
+import net.walksanator.hextweaks.casting.MindflayRegistry
+import net.walksanator.hextweaks.casting.PatternRegistry
+import net.walksanator.hextweaks.casting.handler.GrandSpellHandler
+import net.walksanator.hextweaks.computer.WandPocketUpgrade
+import net.walksanator.hextweaks.computer.WandTurtleUpgrade
 
 import net.walksanator.hextweaks.items.VirtualPigment
 

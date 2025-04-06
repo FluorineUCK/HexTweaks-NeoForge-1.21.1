@@ -23,8 +23,8 @@
     ]
   },
   "mixins": [
-    "examplemod.mixins.json",
-    "examplemod-common.mixins.json"
+    "hextweaks.mixins.json",
+    "hextweaks-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",

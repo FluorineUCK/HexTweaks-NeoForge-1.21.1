@@ -18,8 +18,8 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.Mob
 import net.minecraft.world.phys.Vec3
 import net.walksanator.hextweaks.HexTweaks
-import net.walksantor.hextweaks.casting.MindflayRegistry
-import net.walksantor.hextweaks.casting.mindflay.MindflayInput
+import net.walksanator.hextweaks.casting.MindflayRegistry
+import net.walksanator.hextweaks.casting.mindflay.MindflayInput
 
 object OpMindflayPlus : SpellAction {
     override val argc = 2

@@ -7,7 +7,7 @@ import net.minecraft.nbt.Tag
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
-import net.walksantor.hextweaks.casting.HexTweaksIotaTypes
+import net.walksanator.hextweaks.casting.HexTweaksIotaTypes
 
 class RitualIota(val ritualid: ResourceLocation) : Iota(HexTweaksIotaTypes.RITUAL, ritualid) {
 

@@ -10,10 +10,10 @@ import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.walksanator.hextweaks.HexTweaks
-import net.walksantor.hextweaks.HexTweaksRegistry
-import net.walksantor.hextweaks.casting.iota.ByteArrayIota
-import net.walksantor.hextweaks.casting.iota.ByteIota
-import net.walksantor.hextweaks.casting.iota.RitualIota
+import net.walksanator.hextweaks.HexTweaksRegistry
+import net.walksanator.hextweaks.casting.iota.ByteArrayIota
+import net.walksanator.hextweaks.casting.iota.ByteIota
+import net.walksanator.hextweaks.casting.iota.RitualIota
 
 object HexTweaksIotaTypes {
     val IOTATYPE = DeferredRegister.create(

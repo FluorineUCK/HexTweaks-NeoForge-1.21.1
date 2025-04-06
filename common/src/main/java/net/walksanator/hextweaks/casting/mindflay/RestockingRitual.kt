@@ -3,7 +3,7 @@ package net.walksanator.hextweaks.casting.mindflay
 import at.petrak.hexcasting.api.casting.iota.EntityIota
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.npc.Villager
-import net.walksantor.hextweaks.casting.MindflayRegistry
+import net.walksanator.hextweaks.casting.MindflayRegistry
 
 object RestockingRitual {
     fun restockVillager(input: MindflayInput): net.walksanator.hextweaks.casting.mindflay.MindflayResult {

@@ -25,7 +25,7 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.phys.Vec3
 import net.walksanator.hextweaks.HexTweaks
-import net.walksantor.hextweaks.SecurityLevel
+import net.walksanator.hextweaks.SecurityLevel
 import org.jblas.DoubleMatrix
 import ram.talia.moreiotas.api.casting.iota.*
 import ram.talia.moreiotas.common.lib.hex.MoreIotasIotaTypes

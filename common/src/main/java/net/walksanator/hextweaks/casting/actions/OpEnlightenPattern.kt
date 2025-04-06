@@ -8,7 +8,7 @@ import at.petrak.hexcasting.api.casting.iota.PatternIota
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.misc.MediaConstants
 import net.minecraft.Util
-import net.walksantor.hextweaks.casting.PatternRegistry
+import net.walksanator.hextweaks.casting.PatternRegistry
 
 class OpEnlightenPattern : SpellAction {
     override val argc = 1

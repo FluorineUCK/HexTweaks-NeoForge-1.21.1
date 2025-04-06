@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.walksanator.hextweaks.HexTweaks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.walksantor.hextweaks.HexTweaksRegistry;
+import net.walksanator.hextweaks.HexTweaksRegistry;
 
 @Mod(HexTweaks.MOD_ID)
 @Mod.EventBusSubscriber(modid = HexTweaks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

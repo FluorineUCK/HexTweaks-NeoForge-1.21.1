@@ -7,7 +7,7 @@ import at.petrak.hexcasting.api.casting.eval.vm.CastingImage
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
 import at.petrak.hexcasting.api.casting.iota.ListIota
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
-import net.walksantor.hextweaks.casting.continuation.ContinuationWhile
+import net.walksanator.hextweaks.casting.continuation.ContinuationWhile
 
 object OpLoopWhile : Action {
     override fun operate(

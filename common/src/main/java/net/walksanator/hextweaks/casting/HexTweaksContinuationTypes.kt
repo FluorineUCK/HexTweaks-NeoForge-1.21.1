@@ -8,8 +8,8 @@ import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.walksanator.hextweaks.HexTweaks
-import net.walksantor.hextweaks.HexTweaksRegistry
-import net.walksantor.hextweaks.casting.continuation.ContinuationWhile
+import net.walksanator.hextweaks.HexTweaksRegistry
+import net.walksanator.hextweaks.casting.continuation.ContinuationWhile
 import java.util.LinkedHashMap
 
 object HexTweaksContinuationTypes {

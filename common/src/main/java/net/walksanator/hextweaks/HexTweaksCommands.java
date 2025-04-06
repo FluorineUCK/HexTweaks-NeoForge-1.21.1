@@ -12,7 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.walksantor.hextweaks.casting.PatternRegistry;
+import net.walksanator.hextweaks.casting.PatternRegistry;
 
 import java.util.Objects;
 

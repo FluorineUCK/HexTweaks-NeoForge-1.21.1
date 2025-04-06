@@ -1,6 +1,6 @@
 package net.walksanator.hextweaks.casting.actions.tcp
 
-import net.walksantor.hextweaks.casting.mishap.tcp.MishapNoConnection
+import net.walksanator.hextweaks.casting.mishap.tcp.MishapNoConnection
 import java.net.Socket
 
 object TcpConnections {

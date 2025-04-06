@@ -1,7 +1,7 @@
 package net.walksanator.hextweaks.fabric.mixin;
 
 import at.petrak.hexcasting.fabric.FabricHexInitializer;
-import net.walksantor.hextweaks.HexTweaksRegistry;
+import net.walksanator.hextweaks.HexTweaksRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

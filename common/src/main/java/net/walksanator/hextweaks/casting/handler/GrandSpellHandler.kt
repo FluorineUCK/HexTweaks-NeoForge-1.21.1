@@ -10,7 +10,7 @@ import at.petrak.hexcasting.api.mod.HexConfig
 import net.minecraft.Util
 import net.minecraft.network.chat.Component
 import net.walksanator.hextweaks.HexTweaks
-import net.walksantor.hextweaks.casting.PatternRegistry
+import net.walksanator.hextweaks.casting.PatternRegistry
 import java.util.*
 import kotlin.collections.ArrayDeque
 import kotlin.math.min

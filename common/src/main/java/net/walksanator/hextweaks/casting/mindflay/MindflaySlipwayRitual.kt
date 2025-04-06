@@ -5,7 +5,7 @@ import at.petrak.hexcasting.api.casting.iota.Vec3Iota
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
-import net.walksantor.hextweaks.casting.MindflayRegistry
+import net.walksanator.hextweaks.casting.MindflayRegistry
 import ram.talia.hexal.common.entities.BaseWisp
 import ram.talia.hexal.common.entities.WanderingWisp
 import ram.talia.hexal.common.lib.HexalBlocks

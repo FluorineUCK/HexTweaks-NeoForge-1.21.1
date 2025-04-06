@@ -4,7 +4,7 @@ import at.petrak.hexcasting.api.casting.castables.ConstMediaAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.iota.Iota
 import net.minecraft.world.damagesource.DamageSources
-import net.walksantor.hextweaks.HexTweaksRegistry
+import net.walksanator.hextweaks.HexTweaksRegistry
 
 class OpSuicide : ConstMediaAction {
     override val argc = 0

@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.walksanator.hextweaks.HexTweaks;
 import net.fabricmc.api.ModInitializer;
-import net.walksantor.hextweaks.HexTweaksRegistry;
-import net.walksantor.hextweaks.casting.MindflayRegistry;
+import net.walksanator.hextweaks.HexTweaksRegistry;
+import net.walksanator.hextweaks.casting.MindflayRegistry;
 
 import java.util.Map;
 import java.util.Optional;

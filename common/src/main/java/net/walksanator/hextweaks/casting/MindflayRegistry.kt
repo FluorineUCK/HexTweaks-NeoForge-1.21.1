@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.Mob
 import net.minecraft.world.entity.npc.Villager
 import net.walksanator.hextweaks.HexTweaks
-import net.walksantor.hextweaks.casting.mindflay.*
+import net.walksanator.hextweaks.casting.mindflay.*
 import java.util.function.Function
 import kotlin.math.pow
 

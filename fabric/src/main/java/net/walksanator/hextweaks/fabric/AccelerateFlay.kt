@@ -4,8 +4,8 @@ import at.petrak.hexcasting.api.casting.iota.Vec3Iota
 import de.dafuqs.spectrum.blocks.titration_barrel.TitrationBarrelBlockEntity
 import net.minecraft.core.BlockPos
 import net.minecraft.world.entity.monster.Witch
-import net.walksantor.hextweaks.casting.MindflayRegistry
-import net.walksantor.hextweaks.casting.mindflay.MindflayInput
+import net.walksanator.hextweaks.casting.MindflayRegistry
+import net.walksanator.hextweaks.casting.mindflay.MindflayInput
 import net.walksanator.hextweaks.casting.mindflay.MindflayResult
 import net.walksanator.hextweaks.fabric.mixin.SealTimeAccessor
 import kotlin.jvm.optionals.getOrNull
