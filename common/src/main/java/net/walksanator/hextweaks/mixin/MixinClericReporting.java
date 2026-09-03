@@ -14,7 +14,10 @@ public abstract class MixinClericReporting {
     @Inject(method = "postPrint", at = @At("HEAD"))
     public void sendToPlayer(Component printDisplay, CallbackInfo ci) {
         if (((Object)this) instanceof BlockEntityRedstoneImpetus cleric) {
-            cleric.getStoredPlayer().sendSystemMessage(printDisplay);
+            var player = cleric.getStoredPlayer();
+            if (player != null) {
+                player.sendSystemMessage(printDisplay);
+            }
         }
     }
 }

@@ -13,12 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vazkii.patchouli.api.PatchouliAPI;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -43,7 +41,7 @@ public class HexTweaks {
                                         res.toFile()
                                 )
                         )
-                ).getOrThrow(false, LOGGER::error);
+                ).getOrThrow(IllegalStateException::new);
                 Optional<HexTweaksConfig> right = either.right();
                 if (right.isPresent()) {
                     makeFile = true;
@@ -54,7 +52,11 @@ public class HexTweaks {
                     CONFIG = either.left().get();
                 }
             } catch (Exception e) {
-                LOGGER.error("Hextweaks config does not exists. defaulting");
+                if (Files.notExists(res)) {
+                    LOGGER.info("Hextweaks config does not exist; creating defaults.");
+                } else {
+                    LOGGER.warn("Failed to load Hextweaks config; resetting to defaults.", e);
+                }
                 makeFile = true;
                 CONFIG = HexTweaksConfig.Companion.getDEFAULT();
             }
@@ -68,16 +70,10 @@ public class HexTweaks {
             try {
                 Files.writeString(res,output);
             } catch (IOException e) {
-                LOGGER.error("Failed to save hextweaks config to a string");
-                e.printStackTrace((PrintStream) LOGGER);
+                LOGGER.error("Failed to save hextweaks config", e);
             }
         }
         return CONFIG;
-    }
-
-    public static void breakpoint() {
-        LOGGER.info("breakpoints sometimes fail. call me instead!");
-        new Exception("Breakpoint").printStackTrace();
     }
 
     public static void init() {

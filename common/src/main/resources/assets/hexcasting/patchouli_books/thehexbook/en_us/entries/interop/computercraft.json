@@ -1,6 +1,6 @@
 {
   "name": "hextweaks.entry.interop.cc",
-  "icon": "computercraft:turtle_advanced",
+  "icon": "hexcasting:staff/mindsplice",
   "category": "hexcasting:interop",
   "advancement": "hexcasting:enlightenment",
   "flag": "mod:computercraft",

@@ -1,21 +1,12 @@
 package net.walksanator.hextweaks
 
 import at.petrak.hexcasting.common.lib.HexRegistries
-import dan200.computercraft.api.client.ComputerCraftAPIClient
-import dan200.computercraft.api.client.turtle.TurtleUpgradeModeller
-import dan200.computercraft.api.pocket.PocketUpgradeSerialiser
-import dan200.computercraft.api.turtle.TurtleUpgradeSerialiser
 import dev.architectury.platform.Platform
-import dev.architectury.registry.client.level.entity.EntityRendererRegistry
-import dev.architectury.registry.level.entity.EntityAttributeRegistry
 import dev.architectury.registry.registries.DeferredRegister
-import dev.architectury.registry.registries.RegistrySupplier
-import net.minecraft.core.Holder
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageType
 import net.minecraft.world.item.Item
 import net.walksanator.hextweaks.casting.HexTweaksContinuationTypes
@@ -23,9 +14,7 @@ import net.walksanator.hextweaks.casting.HexTweaksIotaTypes
 import net.walksanator.hextweaks.casting.MindflayRegistry
 import net.walksanator.hextweaks.casting.PatternRegistry
 import net.walksanator.hextweaks.casting.handler.GrandSpellHandler
-import net.walksanator.hextweaks.computer.WandPocketUpgrade
-import net.walksanator.hextweaks.computer.WandTurtleUpgrade
-
+import net.walksanator.hextweaks.computer.ComputerCraftCompat
 import net.walksanator.hextweaks.items.VirtualPigment
 
 
@@ -40,27 +29,22 @@ object HexTweaksRegistry {
     val SPECIAL_HANDLERS = reg(HexRegistries.SPECIAL_HANDLER)
     val ACTIONS = reg(HexRegistries.ACTION)
 
-    lateinit var POCKET_SERIALS : DeferredRegister<PocketUpgradeSerialiser<*>>
-    lateinit var TURTLE_SERIALS : DeferredRegister<TurtleUpgradeSerialiser<*>>
-    lateinit var WAND_TURTLE : RegistrySupplier<WandTurtleUpgrade.UpgradeSerializer>
     init {
         if (Platform.isModLoaded("computercraft")) {
-            POCKET_SERIALS = reg(PocketUpgradeSerialiser.registryId())
-            TURTLE_SERIALS = reg(TurtleUpgradeSerialiser.registryId())
-
-            val WAND_POCKET = POCKET_SERIALS.register(ResourceLocation(net.walksanator.hextweaks.HexTweaks.MOD_ID,"wand")) { WandPocketUpgrade.UpgradeSerialiser() }
-            WAND_TURTLE = TURTLE_SERIALS.register(ResourceLocation(net.walksanator.hextweaks.HexTweaks.MOD_ID,"wand")) { WandTurtleUpgrade.UpgradeSerializer() }
+            ComputerCraftCompat.init(regMap)
         }
     }
 
-    val RGB_PIGMENT = ITEMS.register(ResourceLocation(net.walksanator.hextweaks.HexTweaks.MOD_ID,"rgb_pigment")) {
-        net.walksanator.hextweaks.items.VirtualPigment(Item.Properties().stacksTo(-1));
+    val RGB_PIGMENT = ITEMS.register(ResourceLocation.fromNamespaceAndPath(net.walksanator.hextweaks.HexTweaks.MOD_ID, "rgb_pigment")) {
+        net.walksanator.hextweaks.items.VirtualPigment(Item.Properties().stacksTo(1));
     }
 
-    val GRAND_HANDLER = SPECIAL_HANDLERS.register(ResourceLocation(net.walksanator.hextweaks.HexTweaks.MOD_ID,"grand")) { GrandSpellHandler.Factory() }
+    val GRAND_HANDLER = SPECIAL_HANDLERS.register(ResourceLocation.fromNamespaceAndPath(net.walksanator.hextweaks.HexTweaks.MOD_ID, "grand")) { GrandSpellHandler.Factory() }
 
-    val SUS_DAMMAGET = DamageType("hextweaks.death.sus",0.0f)
-    val SUS_DAMMAGE = DamageSource(Holder.direct(SUS_DAMMAGET))
+    val SUS_DAMAGE_TYPE: ResourceKey<DamageType> = ResourceKey.create(
+        Registries.DAMAGE_TYPE,
+        ResourceLocation.fromNamespaceAndPath(HexTweaks.MOD_ID, "sus")
+    )
 
 
 
@@ -77,8 +61,7 @@ object HexTweaksRegistry {
         }
         if (key == null) {
             if (Platform.isModLoaded("computercraft")) {
-                POCKET_SERIALS.register()
-                TURTLE_SERIALS.register()
+                ComputerCraftCompat.register()
             }
             BLOCKS.register()
             ITEMS.register()
@@ -88,22 +71,12 @@ object HexTweaksRegistry {
 //            MindflayRegistry.register()
             HexTweaksContinuationTypes.CONTINUATION_REGISTRY.register()
         } else {
-            val reg3 = regMap[key]
-            if (reg3 != null) {
-                reg3.register()
-            } else {
-                net.walksanator.hextweaks.HexTweaks.LOGGER.warn("Registry type {} does not exists in regMap",key)
-            }
-        }
-    }
-
-    fun model() {
-        //client init on forge...
-        if (Platform.isModLoaded("computercraft")) {
-            ComputerCraftAPIClient.registerTurtleUpgradeModeller(
-                WAND_TURTLE.get(),
-                TurtleUpgradeModeller.flatItem()
-            )
+            // NeoForge emits RegisterEvent once for every registry.  Most of
+            // those registries intentionally have no HexTweaks entries, so an
+            // absent DeferredRegister is the normal case rather than an error.
+            // Logging every unrelated registry produced hundreds of warnings
+            // during each client/server startup.
+            regMap[key]?.register()
         }
     }
 

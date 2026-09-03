@@ -2,39 +2,38 @@ package net.walksanator.hextweaks.casting.iota
 
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.nbt.Tag
+import com.mojang.serialization.MapCodec
+import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.Component
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.server.level.ServerLevel
 import net.walksanator.hextweaks.casting.HexTweaksIotaTypes
 
-class RitualIota(val ritualid: ResourceLocation) : Iota(HexTweaksIotaTypes.RITUAL, ritualid) {
+class RitualIota(val ritualid: ResourceLocation) : Iota({ HexTweaksIotaTypes.RITUAL }) {
 
     class RitualIotaType : IotaType<RitualIota>() {
-        override fun deserialize(tag: Tag?, world: ServerLevel?): RitualIota = RitualIota(
-            ResourceLocation((tag as CompoundTag).getString("namespace"),tag.getString("path"))
-        )
+        override fun codec(): MapCodec<RitualIota> = CODEC
 
-        override fun display(tag: Tag?): Component = Component.translatable("hextweaks.iota.ritual")
+        override fun streamCodec(): StreamCodec<RegistryFriendlyByteBuf, RitualIota> = STREAM_CODEC
 
         override fun color(): Int = 0xFF0000 // literally ChatGPT suggested color
 
+        companion object {
+            val CODEC: MapCodec<RitualIota> = ResourceLocation.CODEC
+                .xmap(::RitualIota, RitualIota::ritualid)
+                .fieldOf("id")
+
+            val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, RitualIota> = ResourceLocation.STREAM_CODEC
+                .map(::RitualIota, RitualIota::ritualid)
+                .mapStream { it }
+        }
     }
 
     override fun isTruthy(): Boolean = true
 
-    override fun toleratesOther(that: Iota?): Boolean {
-        if (that is RitualIota) {
-            return that.ritualid == ritualid
-        }
-        return false
-    }
+    override fun toleratesOther(that: Iota): Boolean = typesMatch(this, that) && that is RitualIota && that.ritualid == ritualid
 
-    override fun serialize(): Tag {
-        val tag = CompoundTag()
-        tag.putString("namespace",ritualid.namespace)
-        tag.putString("path",ritualid.path)
-        return tag
-    }
+    override fun display(): Component = Component.translatable("hextweaks.iota.ritual")
+
+    override fun hashCode(): Int = ritualid.hashCode()
 }

@@ -26,12 +26,17 @@ object OpMindflayPlus : SpellAction {
     override fun execute(args: List<Iota>, env: CastingEnvironment): SpellAction.Result {
         val sacrificed = args.getList(0,argc)
         val target = args[1];
-        if (!(target is EntityIota || target is Vec3Iota)) {throw MishapInvalidIota(target,2, Component.translatable("iota.entity_or_position"))}
+        if (!(target is EntityIota || target is Vec3Iota)) {
+            throw MishapInvalidIota(
+                target,
+                argc - 2,
+                Component.translatable("iota.entity_or_position")
+            )
+        }
 
         val filter = sacrificed.filterIsInstance<EntityIota>()
-            .filter { it.entity is Mob }
-            .filter { env.isVecInRange(it.entity.position()) }
-            .map { it.entity as Mob }
+            .mapNotNull { it.getEntity(env.world) as? Mob }
+            .filter { env.isVecInRange(it.position()) }
 
         return SpellAction.Result(
             Spell(filter, target),

@@ -1,0 +1,80 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/walksanatora/HexTweaks/issues"
+
+[[mods]]
+modId = "hextweaks"
+version = "${version}"
+displayName = "HexTweaks"
+authors = "walksanator"
+description = '''
+Opinionated changes and additions for Hex Casting.
+'''
+
+[[mixins]]
+config = "hextweaks-common.mixins.json"
+
+[[dependencies.hextweaks]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.234,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.8,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "kotlinforforge"
+type = "required"
+versionRange = "[5.12,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "hexcasting"
+type = "required"
+versionRange = "[0.12.0-devel-pre-35,)"
+
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "computercraft"
+type = "optional"
+versionRange = "[1.120.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "patchouli"
+type = "required"
+versionRange = "[1.21.1-93-NEOFORGE,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "moreiotas"
+type = "optional"
+versionRange = "[0.1.1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hextweaks]]
+modId = "hexal"
+type = "optional"
+versionRange = "[0.3.1,)"
+ordering = "AFTER"
+side = "BOTH"

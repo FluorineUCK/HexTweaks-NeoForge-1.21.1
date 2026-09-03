@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "hextweaks:infusion",
+    {"id": "hextweaks:you_like_drinking_potions","required": false}
+  ]
+}

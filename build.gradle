@@ -1,7 +1,8 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "architectury-plugin" version "3.4.164"
     id "dev.architectury.loom" version "1.9-SNAPSHOT" apply false
-    id 'org.jetbrains.kotlin.jvm' version '2.1.10' apply false
+    id "org.jetbrains.kotlin.jvm" version "2.3.21" apply false
+
 }
 
 architectury {
@@ -25,15 +26,15 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // The following line declares the mojmap mappings, you may use other mappings as well
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-1.20.2:2023.10.08@zip")
-        }
-        // The following line declares the yarn mappings you may select this one as well.
-        // mappings "net.fabricmc:yarn:1.20.1+build.10:v2"
+        mappings loom.officialMojangMappings()
 
-        modCompileOnly "at.petra-k.hexcasting:hexcasting-common-1.20.1:${rootProject.hexcasting_version}"
+    }
+
+    sourceSets.main.kotlin.srcDirs += "src/main/java"
+    sourceSets.main.resources.srcDirs += "src/generated/resources"
+
+    kotlin {
+        jvmToolchain(21)
     }
 }
 
@@ -76,14 +77,16 @@ allprojects {
         maven { url = "https://cfa2.cursemaven.com" }
         maven { url = "https://repo.unascribed.com" } // Ears API
         maven { url = "https://maven.enginehub.org/repo/" } // world edit
+        maven { url "https://maven.neoforged.net/releases/" }
     }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 17
+        options.release = 21
     }
 
     java {
+        toolchain.languageVersion = JavaLanguageVersion.of(21)
         withSourcesJar()
     }
 }

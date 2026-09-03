@@ -1,27 +1,21 @@
 architectury {
-    common(rootProject.enabled_platforms.split(","))
-}
-
-loom {
-    accessWidenerPath = file("src/main/resources/hextweaks.accesswidener")
+    common(rootProject.enabled_platforms.split(",")) {
+        it.platformPackage "neoforge", "forge"
+    }
 }
 
 dependencies {
-    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
-    // Do NOT use other classes from fabric loader
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
-    modCompileOnly "cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-fabric:${rootProject.cct_version}"
+    // The official pre-39 publication has no separate devruntime artifact.
+    // Compile common against the same plain NeoForge jar used at launch.
+    compileOnly files("${rootProject.rootDir}/libs/hexcasting-neoforge-${rootProject.minecraft_version}-${rootProject.hexcasting_version}.jar")
+    modCompileOnly "cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-forge-api:${rootProject.cct_version}"
+    modCompileOnly "cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-forge:${rootProject.cct_version}"
     modCompileOnly "org.squiddev:Cobalt:0.7.3"
-    //modCompileOnly "maven.modrinth:ducky-periphs:FYDI2Gut"
-    modImplementation "vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FABRIC"
-    modCompileOnly files("${rootProject.rootDir}/libs/hexal-fabric-1.20.1-0.3.0-2.jar")
-    modImplementation files("${rootProject.rootDir}/libs/moreiotas-fabric-1.20.1-0.1.0-4.jar")
-    compileOnly group: "org.jblas", name: "jblas", version: "1.2.5"
-    modCompileOnly("maven.modrinth:plethora-peripherals:5pxGGDeh") // yes plethora is something we depend on... kinda
-    modCompileOnly("com.sk89q.worldedit:worldedit-core:7.3.0-SNAPSHOT")
-    modCompileOnly("maven.modrinth:cc-androids:GEMYgmf8") //our new AI overlords should be able to hexcast. it is only fair as the superior life form
+    modCompileOnly files("${rootProject.rootDir}/libs/Patchouli-${rootProject.patchouli_version}.jar")
+    modCompileOnly files("${rootProject.rootDir}/libs/hexal-0.3.1+1.21.1-neoforge-pre39.jar")
+    modCompileOnly files("${rootProject.rootDir}/libs/moreiotas-0.1.1+1.21.1-neoforge-pre39.jar")
+    compileOnly group: "org.ejml", name: "ejml-simple", version: "0.45.1"
 }
 
 publishing {

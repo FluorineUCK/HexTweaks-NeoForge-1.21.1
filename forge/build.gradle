@@ -1,21 +1,53 @@
+import org.gradle.api.attributes.Attribute
+
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
+def patchedFMLModType = Attribute.of("patchedFMLModType", Boolean.class)
+def includeCcRuntime = !providers.gradleProperty("withoutCcRuntime").present
+def includeAddonRuntime = providers.gradleProperty("withAddonRuntime").present
+def enableProbe = providers.gradleProperty("hextweaksProbe").present
+def enableMinimalProbe = providers.gradleProperty("hextweaksMinimalProbe").present
+def clientProbeWorld = includeAddonRuntime
+        ? (includeCcRuntime ? "HexTweaksProbePre2Full" : "HexTweaksProbePre2AddonsNoCc")
+        : (includeCcRuntime ? "HexTweaksProbePre2CcOnly" : "HexTweaksProbePre2Minimal")
+def serverProbeWorld = (clientProbeWorld + "Server").toString()
+
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge {
+        platformPackage = "forge"
+    }
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-
-        mixinConfig "hextweaks-common.mixins.json"
-        mixinConfig "hextweaks.mixins.json"
+    if (enableProbe || enableMinimalProbe) {
+        runs {
+            server {
+                if (enableProbe) {
+                    vmArg "-Dhextweaks.probe.validate=true"
+                    programArgs(["--world", serverProbeWorld])
+                }
+                if (enableMinimalProbe) {
+                    vmArg "-Dhextweaks.probe.validateMinimal=true"
+                    if (includeAddonRuntime) {
+                        vmArg "-Dhextweaks.probe.expectAddons=true"
+                    }
+                    programArgs(["--world", serverProbeWorld])
+                }
+            }
+            if (enableProbe) {
+                client {
+                    vmArg "-Dhextweaks.probe.validateClient=true"
+                    vmArg "-Dhextweaks.probe.exitAfterClientStartup=true"
+                    // Keep optional-dependency matrices in separate saves. Reusing
+                    // a Hexal world without Hexal produces misleading missing-block
+                    // recovery warnings and does not test a clean optional launch.
+                    programArgs(["--quickPlaySingleplayer", clientProbeWorld])
+                }
+            }
+        }
     }
 }
 
@@ -36,49 +68,77 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common, localRuntime
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.neo_forge_version}"
+    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 
-    modApi("at.petra-k.hexcasting:hexcasting-forge-1.20.1:${rootProject.hexcasting_version}") {transitive false}
-    modImplementation "at.petra-k.paucal:paucal-forge-${rootProject.minecraft_version}:${rootProject.paucal_version}"
-    modLocalRuntime "top.theillusivec4.caelus:caelus-forge:${rootProject.caelus_version}"
-    modApi("me.shedaniel.cloth:cloth-config-forge:${rootProject.clothconfig_version}")
+    // Architectury writes compile-only files into its transformation
+    // classpath. Compiling against Hex's plain JAR while launching its
+    // devruntime JAR therefore creates two IClientXplatAbstractions class
+    // identities and makes the devruntime ServiceLoader provider fail its
+    // subtype check. Use the exact launch artifact on both sides.
+    compileOnly files("${rootProject.rootDir}/libs/hexcasting-neoforge-${rootProject.minecraft_version}-${rootProject.hexcasting_version}.jar")
+    compileOnly files("${rootProject.rootDir}/libs/hexal-0.3.1+1.21.1-neoforge-pre39.jar")
+    compileOnly files("${rootProject.rootDir}/libs/moreiotas-0.1.1+1.21.1-neoforge-pre39.jar")
+    compileOnly files("${rootProject.rootDir}/libs/Patchouli-${rootProject.patchouli_version}.jar")
+    compileOnly group: "org.ejml", name: "ejml-simple", version: "0.45.1"
+    runtimeOnly files("${rootProject.rootDir}/libs/hexcasting-neoforge-${rootProject.minecraft_version}-${rootProject.hexcasting_version}.jar")
+
+    runtimeOnly files("${rootProject.rootDir}/libs/paucal-${rootProject.paucal_version}+${rootProject.minecraft_version}-neoforge.jar")
+    runtimeOnly files("${rootProject.rootDir}/libs/inline-${rootProject.minecraft_version}-1.2.2-neoforge-devruntime.jar")
+    runtimeOnly files("${rootProject.rootDir}/libs/caelus-neoforge-${rootProject.caelus_version}.jar")
+    runtimeOnly files("${rootProject.rootDir}/libs/Patchouli-${rootProject.patchouli_version}.jar")
+    // Inline declares Cloth Config as a runtime mod dependency. HexTweaks itself
+    // does not use Cloth Config, so keep it out of the published API/metadata.
+    modRuntimeOnly "me.shedaniel.cloth:cloth-config-neoforge:${rootProject.clothconfig_version}"
+    if (includeAddonRuntime) {
+        runtimeOnly files("${rootProject.rootDir}/libs/moreiotas-0.1.1+1.21.1-neoforge-pre39.jar")
+        runtimeOnly files("${rootProject.rootDir}/libs/hexal-0.3.1+1.21.1-neoforge-pre39.jar")
+        runtimeOnly files("${rootProject.rootDir}/libs/geckolib-neoforge-1.21.1-4.9.2.jar")
+    }
 
     modCompileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-forge-api:${rootProject.cct_version}")
-    modRuntimeOnly "cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-forge:${rootProject.cct_version}"
-
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.6"))
-    implementation(include("io.github.llamalad7:mixinextras-forge:0.3.6"))
+    // The runtime regression probe constructs CC:Tweaked's real PocketBrain,
+    // which lives in the full mod artifact rather than the public API artifact.
+    // This remains compile-only and does not change HexTweaks' published deps.
+    modCompileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-forge:${rootProject.cct_version}")
+    if (includeCcRuntime) {
+        modRuntimeOnly "cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-forge:${rootProject.cct_version}"
+        localRuntime("org.squiddev:Cobalt:0.7.3") {
+            transitive = false
+            attributes {
+                attribute(patchedFMLModType, true)
+            }
+        }
+    }
 
     //hexcasting deps
-    modImplementation "vazkii.patchouli:Patchouli:${rootProject.patchouli_version}-FORGE"
-    implementation 'thedarkcolour:kotlinforforge:4.3.0'
+    runtimeOnly "thedarkcolour:kotlinforforge-neoforge:${rootProject.forge_kotlin_version}"
 
-    modCompileOnly "com.sk89q.worldedit:worldedit-forge-mc1.20:7.3.0-SNAPSHOT"
 
 }
 
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching("META-INF/neoforge.mods.toml") {
         expand "version": project.version
     }
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
     configurations = [project.configurations.shadowCommon]
+    // Regression probes intentionally live on the Loom development classpath,
+    // but must not add optional-addon hard references to the published mod.
+    exclude "net/walksanator/hextweaks/forge/HexTweaksClientProbe*.class"
+    exclude "net/walksanator/hextweaks/forge/HexTweaksMinimalProbe*.class"
+    exclude "net/walksanator/hextweaks/forge/HexTweaksProbe*.class"
     archiveClassifier = "dev-shadow"
 }
 

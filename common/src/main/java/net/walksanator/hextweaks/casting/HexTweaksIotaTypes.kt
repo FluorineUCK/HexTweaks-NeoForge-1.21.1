@@ -25,9 +25,9 @@ object HexTweaksIotaTypes {
     val BYTE = type("byte",ByteIota.ByteIotaType())
     val RITUAL = type("ritual",RitualIota.RitualIotaType())
 
-    private fun <U : Iota?, T : IotaType<U>?> type(name: String, type: T): T {
+    private fun <U : Iota, T : IotaType<U>> type(name: String, type: T): T {
         IOTATYPE.register(
-            ResourceLocation(
+            ResourceLocation.fromNamespaceAndPath(
                 net.walksanator.hextweaks.HexTweaks.MOD_ID,
                 name
             )

@@ -8,8 +8,10 @@ import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.PatternIota
 import at.petrak.hexcasting.api.casting.math.HexDir
 import at.petrak.hexcasting.api.casting.math.HexPattern
+import at.petrak.hexcasting.api.utils.TreeList
 import at.petrak.hexcasting.common.lib.hex.HexActions
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
+import net.minecraft.nbt.NbtOps
 import dan200.computercraft.api.lua.IArguments
 import dan200.computercraft.api.lua.LuaException
 import dan200.computercraft.api.lua.LuaFunction
@@ -29,7 +31,7 @@ class WandPeripheral(val turtleData: Pair<ITurtleAccess,TurtleSide>?, val pocket
 
     override fun attach(computer: IComputerAccess?) {
         vm = CastingVM(CastingImage(),
-            _root_ide_package_.net.walksanator.hextweaks.casting.environment.ComputerCastingEnv(
+            ComputerCastingEnv(
                 turtleData,
                 pocketData,
                 getWorld(),
@@ -59,41 +61,42 @@ class WandPeripheral(val turtleData: Pair<ITurtleAccess,TurtleSide>?, val pocket
 
     @LuaFunction
     fun getStack(): MethodResult {
-        return MethodResult.of(vm.image.stack.map {IotaSerdeRegistry.toLua(it)})
+        val world = getWorld()
+        return MethodResult.of(vm.image.stack.map { IotaSerdeRegistry.toLua(it, world) })
     }
 
     @LuaFunction
     fun pushStack(obj: Any?) {
-        val stack = vm.image.stack.toMutableList()
-        val iota = IotaSerdeRegistry.fromLua(obj, getWorld())?: GarbageIota()
-        stack.add(iota)
-        vm.image = vm.image.copy(stack) // please petrak I am crying and begging. make the stack mutable
+        val iota = IotaSerdeRegistry.fromLua(obj, getWorld()) ?: GarbageIota()
+        vm.image = vm.image.copy(stack = vm.image.stack.appended(iota))
     }
 
     @LuaFunction
     fun popStack(): Any? {
-        vm.image = vm.image.copy(stack = vm.image.stack.toMutableList())
-        val iota = (vm.image.stack as MutableList).removeLast()
-        return IotaSerdeRegistry.toLua(iota)
+        if (vm.image.stack.isEmpty()) {
+            throw LuaException("Stack is empty")
+        }
+        val iota = vm.image.stack.last()
+        vm.image = vm.image.copy(stack = vm.image.stack.init())
+        return IotaSerdeRegistry.toLua(iota, getWorld())
     }
 
     @LuaFunction
     fun clearStack(): Int {
-        vm.image = vm.image.copy(stack = vm.image.stack.toMutableList())
         val size = vm.image.stack.size
-        (vm.image.stack as MutableList).clear()
+        vm.image = vm.image.copy(stack = TreeList.empty())
         return size
     }
+
 
     @Suppress("UNCHECKED_CAST")
     @LuaFunction
     fun setStack(stack: Map<*,*>) {
-        vm.image = vm.image.copy(stack = vm.image.stack.toMutableList())
         val world = getWorld()
-        (vm.image.stack as MutableList).clear()
-        (vm.image.stack as MutableList).addAll((stack.filter { it.key is Number } as Map<Number,Any>).toSortedMap(compareBy { it.toLong() }).map {
+        val iotas = (stack.filter { it.key is Number } as Map<Number,Any>).toSortedMap(compareBy { it.toLong() }).map {
             IotaSerdeRegistry.fromLua(it.value, world)?: GarbageIota()
-        })
+        }
+        vm.image = vm.image.copy(stack = TreeList.from(iotas))
     }
 
     @LuaFunction
@@ -101,24 +104,26 @@ class WandPeripheral(val turtleData: Pair<ITurtleAccess,TurtleSide>?, val pocket
 
     @LuaFunction
     fun getRavenmind(): Any? {
-        val nbt = vm.image.userData.getCompound(HexAPI.RAVENMIND_USERDATA)
-        val iota = IotaType.deserialize(nbt,getWorld())
-        return IotaSerdeRegistry.toLua(iota)
+        val nbt = vm.image.userData.get(HexAPI.RAVENMIND_USERDATA) ?: return null
+        val iota = IotaType.TYPED_CODEC.parse(NbtOps.INSTANCE, nbt).result().orElse(null)
+        return iota?.let { IotaSerdeRegistry.toLua(it, getWorld()) }
     }
 
     @LuaFunction
-    fun setRavenmind(iota: Any) {
+    fun setRavenmind(iota: Any?) {
         val newLocal = IotaSerdeRegistry.fromLua(iota, getWorld())
-        if ((newLocal?.type ?: HexIotaTypes.NULL) == HexIotaTypes.NULL)
+        if ((newLocal?.type ?: HexIotaTypes.NULL.get()) == HexIotaTypes.NULL.get())
             vm.image.userData.remove(HexAPI.RAVENMIND_USERDATA)
         else
-            vm.image.userData.put(HexAPI.RAVENMIND_USERDATA, IotaType.serialize(newLocal))
+            IotaType.TYPED_CODEC.encodeStart(NbtOps.INSTANCE, newLocal).result().ifPresent {
+                vm.image.userData.put(HexAPI.RAVENMIND_USERDATA, it)
+            }
     }
 
     @LuaFunction(mainThread = true)
     fun runPattern(args: IArguments) {
         val iota = when (args.count()) {
-            0 -> PatternIota(HexActions.EVAL.prototype)
+            0 -> PatternIota(HexActions.EVAL.value().prototype)
             1 -> {
                 val obj = args.getTable(0)
                 IotaSerdeRegistry.fromLua(obj,getWorld())?: throw LuaException("Unable to convert input to Iota")
@@ -129,7 +134,7 @@ class WandPeripheral(val turtleData: Pair<ITurtleAccess,TurtleSide>?, val pocket
         val world = getWorld()
         if (vm.env.world != world) {
             vm = CastingVM(vm.image,
-                _root_ide_package_.net.walksanator.hextweaks.casting.environment.ComputerCastingEnv(
+                ComputerCastingEnv(
                     vm.env as net.walksanator.hextweaks.casting.environment.ComputerCastingEnv,
                     world
                 )

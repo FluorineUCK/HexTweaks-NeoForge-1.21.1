@@ -8,9 +8,11 @@ import net.walksanator.hextweaks.casting.MindflayRegistry
 object RestockingRitual {
     fun restockVillager(input: MindflayInput): net.walksanator.hextweaks.casting.mindflay.MindflayResult {
         if (input.target !is EntityIota) return net.walksanator.hextweaks.casting.mindflay.MindflayResult(false)
-        val target = input.target.entity
+        val target = input.target.getEntity(input.env.world)
         if (target !is Villager)
             return net.walksanator.hextweaks.casting.mindflay.MindflayResult(false) // the target is not a villager
+        if (!input.env.isVecInRange(target.position()))
+            return net.walksanator.hextweaks.casting.mindflay.MindflayResult(false)
 
         val points = MindflayRegistry.calcuateVillagerPoints(input.inputs)
         if (points < target.offers.size)

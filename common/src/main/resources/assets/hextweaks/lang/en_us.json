@@ -1,25 +1,35 @@
 {
+  "item.hextweaks.rgb_pigment": "RGB Pigment",
+  "hextweaks.iota.byte": "Byte",
+  "hextweaks.iota.bytearray": "Byte Array",
+  "hextweaks.iota.ritual": "Ritual",
+  "iota.entity_or_position": "an entity or position",
+
   "hexcasting.action.hextweaks:grand_spell": "Unknown Grand Spell",
   "hexcasting.action.hextweaks:infusion": "Infuse Will",
+  "hexcasting.action.hextweaks:you_like_drinking_potions": "You Like Drinking Potions?",
   "hextweaks.page.infusion.1": "Takes a pattern and makes it unique to me by injecting patterns that I cannot draw by hand$(br)also seems to put more power into certain spells",
 
   "hextweaks.action.lackwill": "The action appears to work but lacks a ",
   "hextweaks.action.lackwill.will": "Will",
 
   "hextweaks.handler.grand": "Grand Spell",
+  "hextweaks.mishap.expected.grand_pattern": "a pattern containing at most %s angles",
+  "commands.hextweaks.give_grand.invalid_angles": "The angle signature may only contain q, w, e, a, s, and d.",
+  "commands.hextweaks.give_grand.too_many_angles": "The angle signature may contain at most 128 angles.",
 
   "death.attack.hextweaks.death.sus": "%s was called sus",
 
-  "hextweaks.entry.interop.cc": "Computercraft",
-  "hextweaks.page.interop.cc.1": "Thanks to my extensive research I have discovered that I can give the turtles and pocket computers a Mindsplice staff to have them perform menial task in my place",
-  "hextweaks.page.interop.cc.2": "there also appears to be a new event when a staff is equipped $(o)reveal() which just has a string sent via patterns like reveal.$(br)and $(o)mishap) that contains the mishap's class,the pattern's name, and the hex pattern as string",
-  "hextweaks.page.interop.cc.3": "Turtles cast as no one and have normal ambit. pocket computers cast as the player holding them. also having full ambit",
+  "hextweaks.entry.interop.cc": "CC: Tweaked",
+  "hextweaks.page.interop.cc.1": "Thanks to my extensive research, I have discovered that I can give turtles and pocket computers a Mindsplice Staff so they can perform menial tasks in my place.",
+  "hextweaks.page.interop.cc.2": "Equipping a staff also adds two computer events. $(o)reveal$() receives the text produced by Reveal. $(o)mishap$() receives the attachment name, mishap class, error message, and pattern.",
+  "hextweaks.page.interop.cc.3": "Turtles cast without a casting entity and use normal ambit. Pocket computers cast as the player carrying them; lectern-mounted pocket computers cast without a casting entity.",
 
-  "hextweaks.category.grand_spells.desc": "It appears that there is another layer of spells. I must infuse my will inorder to find them. I will document what I find out about them here",
+  "hextweaks.category.grand_spells.desc": "It appears that there is another layer of spells. I must infuse my will in order to find them. I will document what I discover here.",
   "hextweaks.category.grand_spells": "Grand Spells",
 
   "hextweaks.category.grand_spells.mindflay_rituals": "Mass Mindflay Rituals",
-  "hextweaks.category.grand_spells.mindflay_rituals.desc": "Here I have compiled every rituals known to me.$(br)\"On The Bulk Flaying Of Minds\"$(br)$(br)Seems to operate on a \"Point\" system. with each villager being worth double the previous",
+  "hextweaks.category.grand_spells.mindflay_rituals.desc": "Here I have compiled every ritual known to me.$(br)\"On the Bulk Flaying of Minds\"$(br)$(br)They operate on a point system, with each villager level worth twice the previous level.",
 
   "hextweaks.entry.patterns.grand.fireball": "Fireball",
   "hextweaks.page.patterns.grand.fireball.1": "It is fireball but with double the maximum power",
@@ -34,19 +44,13 @@
   "hextweaks.page.rituals.slipways.1": "Create slipway.$(br)[villager (80 points)],wisp -> $(br)takes some villagers and turns the wisp into a slipway",
   "hextweaks.page.rituals.slipways.2": "Collapse slipway.$(br)[villager (16 points)],pos -> $(br)takes some villagers and collapses the slipway into 10-20 wandering wisp",
 
-  "hextweaks.entry.rituals.titration": "Titration Time Skip",
-  "hextweaks.page.rituals.titration.1": "$(br)[villager + witch (8 points per witch)],pos -> $(br)takes some villager and witches and tries to skip 12 hours for each witch sacrificed",
-
   "hextweaks.entry.rituals.restock": "Restock Trades",
   "hextweaks.page.rituals.restock.1": "[Villager (1 point per trade)],Villager$(br)Restocks all of the targeted villagers trades.$(br)Consumes 1 point for each trade offered by the target villager",
-
-  "hextweaks.entry.rituals.reset": "Reset Chunk",
-  "hextweaks.page.rituals.reset.1": "[Mason (128 points)], Position ->$(br)Starts a ritual to reset a chunk. it takes 30 minutes total (20 stages of 1-minute and 10-minute countdown)$(br)consumes $(o)98304$() quenched shards per stage. The ritual will not start if any entity aside from Mason villagers is present in the input list",
 
   "hextweaks.entry.hextweaks_utility": "Hextweaks Utility",
   "hexcasting.action.hextweaks:page/right": "Progress Gambit",
   "hexcasting.action.hextweaks:page/left": "Regress Gambit",
-  "hextweaks.page.hextweaks_utility.page/right": "Turns the spellbook that your are holding one page to the right",
+  "hextweaks.page.hextweaks_utility.page/right": "Turns the spellbook that you are holding one page to the right",
   "hextweaks.page.hextweaks_utility.page/left": "Turns the spellbook that your are holding one page to the left",
 
   "hexcasting.action.hextweaks:while": "Heket's Gambit",
@@ -55,12 +59,14 @@
   "hextweaks.entry.hextweaks_pe": "Hextweaks Post Enlightenment",
 
   "hexcasting.action.hextweaks:wave": "Wave Reflection",
-  "hextweaks.page.hextweaks_pe.wave": "Returns the posistion of the $(item)Wave$() of media passing through a $(l:greatwork/impetus)Spell Circle$()",
+  "hextweaks.page.hextweaks_pe.wave": "Returns the position of the $(item)Wave$() of media passing through a $(l:greatwork/impetus)Spell Circle$()",
 
-  "hexcasting.action.hextweaks:normal": "Normals reflection",
+  "hexcasting.action.hextweaks:normal": "Normal Reflection",
   "hextweaks.page.hextweaks_pe.normal": "Returns the $(item)normal$() of the $(item)slate$() the $(item)Wave$() is on in the $(l:greatwork/impetus)Spell Circle$()",
-
-  "hextweaks.entity.sbe": "Ritual Beacon",
-  "hextweaks.ritual.reset": "Ritual of Resetting",
-  "hextweaks.page.hextweaks_utility.sbe": "Gets all Active ritual entities within the specified range$(br)$(br)HexTweaks also makes a mixin so Compass Prfn's no longer do a ambit check"
+  "hexcasting.iota.hextweaks:byte": "Byte",
+  "hexcasting.iota.hextweaks:byte.desc": "a byte",
+  "hexcasting.iota.hextweaks:bytearray": "Byte Array",
+  "hexcasting.iota.hextweaks:bytearray.desc": "a byte array",
+  "hexcasting.iota.hextweaks:ritual": "Ritual",
+  "hexcasting.iota.hextweaks:ritual.desc": "a ritual"
 }

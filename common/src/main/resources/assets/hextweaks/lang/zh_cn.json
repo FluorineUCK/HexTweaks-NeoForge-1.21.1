@@ -1,19 +1,29 @@
 {
+  "item.hextweaks.rgb_pigment": "RGB 颜料",
+  "hextweaks.iota.byte": "字节",
+  "hextweaks.iota.bytearray": "字节数组",
+  "hextweaks.iota.ritual": "仪式",
+  "iota.entity_or_position": "实体或位置",
+
   "hexcasting.action.hextweaks:grand_spell": "未知卓伟法术",
   "hexcasting.action.hextweaks:infusion": "融注意志",
+  "hexcasting.action.hextweaks:you_like_drinking_potions": "你喜欢喝药水吗？",
   "hextweaks.page.infusion.1": "接受一个图案，并以此生成一个无法手动绘制的、因人而异的图案。$(br)似乎会给予某些法术更多能量。",
 
   "hextweaks.action.lackwill": "此操作似乎有用，但缺少了",
   "hextweaks.action.lackwill.will": "的意志",
 
   "hextweaks.handler.grand": "卓伟法术",
+  "hextweaks.mishap.expected.grand_pattern": "角度数不超过 %s 的图案",
+  "commands.hextweaks.give_grand.invalid_angles": "角度签名只能包含 q、w、e、a、s 和 d。",
+  "commands.hextweaks.give_grand.too_many_angles": "角度签名最多可包含 128 个角度。",
 
   "death.attack.hextweaks.death.sus": "%s被认为相当可疑",
 
   "hextweaks.entry.interop.cc": "ComputerCraft",
   "hextweaks.page.interop.cc.1": "我进行了大量研究，最终发现我可以给海龟和掌上电脑配备一杆制念法杖，以让它们替我执行些琐事。",
-  "hextweaks.page.interop.cc.2": "它们持有法杖时还有一些新事件（event）可用。$(o)reveal$() 会像揭示那样通过图案返回字符串。$(br)$(o)mishap$() 则会包含事故的类名、图案的名称，以及字符串形式的咒术图案。",
-  "hextweaks.page.interop.cc.3": "海龟的施法不具有施法者，施法范围正常。掌上电脑施法的施法者为手持它的玩家，施法范围同样正常。",
+  "hextweaks.page.interop.cc.2": "配备法杖后，计算机会获得两个事件。$(o)reveal$() 接收揭示之精思产生的文本；$(o)mishap$() 接收外设名、事故类名、错误文本和对应图案。",
+  "hextweaks.page.interop.cc.3": "海龟施法时没有施法实体，并使用正常施法范围。掌上电脑由携带它的玩家施法；放在讲台上的掌上电脑则没有施法实体。",
 
   "hextweaks.category.grand_spells.desc": "似乎法术还有另一个层次，必须向其中融注意志才能找到它们。我会将我找到的法术记录在此。",
   "hextweaks.category.grand_spells": "卓伟法术",
@@ -34,14 +44,8 @@
   "hextweaks.page.rituals.slipways.1": "创造一个质道。$(br)[村民（80 点）], 咒灵 -> $(br)接受一些村民，并将目标咒灵变为质道。",
   "hextweaks.page.rituals.slipways.2": "坍缩一个质道。$(br)[村民（16 点）], pos -> $(br)接受一些村民，并将质道坍缩为 10 到 20 个游走咒灵。",
 
-  "hextweaks.entry.rituals.titration": "定量时间跳跃",
-  "hextweaks.page.rituals.titration.1": "$(br)[村民 + 女巫（每个 8 点）], pos -> $(br)接受一些村民和女巫，每献祭一个女巫，即尝试向前跳过 12 小时的时间。",
-
   "hextweaks.entry.rituals.restock": "交易补货",
   "hextweaks.page.rituals.restock.1": "[村民（每项交易 1 点）], 村民 ->$(br)为目标村民的所有交易补货。$(br)目标村民每有 1 项交易，即消耗 1 点点数。",
-
-  "hextweaks.entry.rituals.reset": "重置区块",
-  "hextweaks.page.rituals.reset.1": "[石匠（128 点）], pos ->$(br)启动重置区块的仪式。此仪式共需花费 30 分钟，分为 20 个 1 分钟阶段和 10 分钟冷却。$(br)每个阶段消耗 $(o)98304$() 个淬灵晶。送入的列表中若存在不是石匠村民的实体，仪式便不会启动。",
 
   "hextweaks.entry.hextweaks_utility": "咒法调整：实用",
   "hexcasting.action.hextweaks:page/right": "页进之策略",
@@ -55,12 +59,14 @@
   "hextweaks.entry.hextweaks_pe": "咒法调整：启迪之后",
 
   "hexcasting.action.hextweaks:wave": "波之精思",
-  "hextweaks.page.hextweaks_pe.wave": "返回$(l:greatwork/impetus)法术环$()中$(item)媒质波$()的未知。",
+  "hextweaks.page.hextweaks_pe.wave": "返回$(l:greatwork/impetus)法术环$()中$(item)媒质波$()的位置。",
 
   "hexcasting.action.hextweaks:normal": "法向之精思",
   "hextweaks.page.hextweaks_pe.normal": "返回$(l:greatwork/impetus)法术环$()中$(item)媒质波$()所处$(item)石板$()的$(item)法向量$()。",
-
-  "hextweaks.entity.sbe": "仪式信标",
-  "hextweaks.ritual.reset": "重置仪式",
-  "hextweaks.page.hextweaks_utility.sbe": "获取范围内所有已启动的仪式实体。$(br)$(br)咒法拓展还通过 Mixin 让指南针之纯化不再检查施法范围。"
+  "hexcasting.iota.hextweaks:byte": "字节",
+  "hexcasting.iota.hextweaks:byte.desc": "一个字节",
+  "hexcasting.iota.hextweaks:bytearray": "字节数组",
+  "hexcasting.iota.hextweaks:bytearray.desc": "一个字节数组",
+  "hexcasting.iota.hextweaks:ritual": "仪式",
+  "hexcasting.iota.hextweaks:ritual.desc": "一个仪式"
 }
